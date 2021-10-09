@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 09:56:31 by cacharle          #+#    #+#              #
-#    Updated: 2021/02/11 20:13:11 by charles          ###   ########.fr        #
+#    Updated: 2021/10/10 00:43:43 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -18,7 +18,7 @@ import c_formatter_42.formatters.helper as helper
 
 
 class Scope(Enum):
-    LOCAL  = 0
+    LOCAL = 0
     GLOBAL = 1
 
 
@@ -57,8 +57,8 @@ def align_scope(content: str, scope: Scope) -> str:
 
     # global type declaration (struct/union/enum)
     if scope is Scope.GLOBAL:
-        typedecl_open_regex  = (r"^(?P<prefix>\s*(typedef\s+)?(struct|enum|union))"
-                                r"\s*(?P<suffix>[a-zA-Z_]\w+)?$")
+        typedecl_open_regex = (r"^(?P<prefix>\s*(typedef\s+)?(struct|enum|union))"
+                               r"\s*(?P<suffix>[a-zA-Z_]\w+)?$")
         typedecl_close_regex = r"^(?P<prefix>\})\s*(?P<suffix>([a-zA-Z_]\w+)?;)$"
         in_type_scope = False
         for i, line in enumerate(lines):
