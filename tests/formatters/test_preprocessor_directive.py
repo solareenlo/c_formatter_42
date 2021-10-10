@@ -6,11 +6,12 @@
 #    By: charles <me@cacharle.xyz>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/07 15:52:25 by charles           #+#    #+#              #
-#    Updated: 2021/02/11 20:27:53 by charles          ###   ########.fr        #
+#    Updated: 2021/10/10 22:01:29 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
-from c_formatter_42.formatters.preprocessor_directive import preprocessor_directive
+from c_formatter_42.formatters.preprocessor_directive import \
+    preprocessor_directive
 
 
 def test_preprocessor_directive_ifdef():

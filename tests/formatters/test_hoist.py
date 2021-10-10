@@ -11,7 +11,6 @@
 # ############################################################################ #
 
 import pytest
-
 from c_formatter_42.formatters.hoist import hoist
 
 

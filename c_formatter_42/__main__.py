@@ -12,8 +12,8 @@
 #                                                                              #
 # ############################################################################ #
 
-import sys
 import argparse
+import sys
 
 from c_formatter_42.run import run_all
 

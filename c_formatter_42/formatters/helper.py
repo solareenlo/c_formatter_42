@@ -6,12 +6,11 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 11:38:00 by cacharle          #+#    #+#              #
-#    Updated: 2021/02/08 18:22:06 by charles          ###   ########.fr        #
+#    Updated: 2021/10/10 22:25:27 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
 import re
-
 
 # regex for a type
 REGEX_TYPE = r"([a-z]+\s+)*[a-zA-Z_]\w*"
