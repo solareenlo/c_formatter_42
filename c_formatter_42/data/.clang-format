@@ -25,14 +25,16 @@ IndentWidth: 4
 # int         aaaa = 12;
 # float       b = 23;
 # std::string ccc = 23;
-# AlignConsecutiveDeclarations: false
+# AlignConsecutiveDeclarations: true
+AlignConsecutiveDeclarations: AcrossEmptyLinesAndComments
 
 
 # UseTab (UseTabStyle)
 # The way to use tab characters in the resulting file.
 # UT_ForContinuationAndIndentation (in configuration: ForContinuationAndIndentation) Use tabs only for line continuation and indentation.
 # UT_Always (in configuration: Always) Use tabs whenever we need to fill whitespace that spans at least from one tab stop to the next one.
-UseTab: ForContinuationAndIndentation
+# UseTab: ForContinuationAndIndentation
+UseTab: Always
 
 
 # SpaceBeforeParens (SpaceBeforeParensOptions)
