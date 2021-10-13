@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 09:56:31 by cacharle          #+#    #+#              #
-#    Updated: 2021/10/11 14:53:12 by tayamamo         ###   ########.fr        #
+#    Updated: 2021/10/13 12:37:23 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -36,7 +36,7 @@ def align_scope(content: str, scope: Scope) -> str:
         align_regex = (
             "^\t"
             r"(?P<prefix>{type})\s+"
-            r"(?P<suffix>\**{decl};)$"
+            r"(?P<suffix>\**({decl}|{decl} = .+);)$"
         )
     elif scope is Scope.GLOBAL:
         align_regex = (
@@ -91,10 +91,7 @@ def align_scope(content: str, scope: Scope) -> str:
     )
     for i, prefix, suffix in aligned:
         alignment = len(prefix.replace("\t", " " * 4)) // 4
-        if scope is Scope.GLOBAL:
-            lines[i] = prefix + "\t" + suffix
-        else:
-            lines[i] = prefix + "\t" * (min_alignment - alignment) + suffix
+        lines[i] = prefix + "\t" * (min_alignment - alignment) + suffix
         if scope is Scope.LOCAL:
             lines[i] = "\t" + lines[i]
     return "\n".join(lines)

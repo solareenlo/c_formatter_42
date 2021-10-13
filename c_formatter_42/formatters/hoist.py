@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 11:16:28 by cacharle          #+#    #+#              #
-#    Updated: 2021/02/11 20:13:29 by charles          ###   ########.fr        #
+#    Updated: 2021/10/12 23:37:55 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -56,15 +56,23 @@ def hoist(content: str) -> str:
             line
         )
         if m is not None:
-            lines.append("\t{}\t{};".format(
-                m.group("type"),
-                m.group("name"))
-            )
-            lines.append("{}{} = {};".format(
-                m.group("indent"),
-                m.group("name").replace("*", ""),
-                m.group("value"))
-            )
+            if "const" not in m.group("type") and "static" not in m.group("type"):
+                lines.append("\t{}\t{};".format(
+                    m.group("type"),
+                    m.group("name"))
+                )
+                lines.append("{}{} = {};".format(
+                    m.group("indent"),
+                    m.group("name").replace("*", ""),
+                    m.group("value"))
+                )
+            else:
+                lines.append("\t{}{}{} = {};".format(
+                    m.group("type"),
+                    m.group("indent"),
+                    m.group("name").replace("*", ""),
+                    m.group("value"))
+                )
         else:
             lines.append(line)
 
@@ -72,6 +80,10 @@ def hoist(content: str) -> str:
     decl_regex = r"^\s*{t}\s+{d};$".format(t=helper.REGEX_TYPE, d=helper.REGEX_DECL_NAME)
     declarations = [line for line in lines
                     if re.match(decl_regex, line) is not None]
+    decl_regex_const = r"^\s*{t}\s+{d}\s+=\s.+;$".format(
+        t=helper.REGEX_TYPE, d=helper.REGEX_DECL_NAME)
+    declarations.extend([line for line in lines
+                         if re.match(decl_regex_const, line) is not None])
     body = [line for line in lines
             if line not in declarations and line != ""]
     lines = declarations
