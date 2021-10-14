@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 09:56:31 by cacharle          #+#    #+#              #
-#    Updated: 2021/10/14 15:42:57 by tayamamo         ###   ########.fr        #
+#    Updated: 2021/10/14 16:46:27 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -71,8 +71,6 @@ def align_scope(content: str, scope: Scope) -> str:
                 if line != "};":
                     aligned.append((i, m.group("prefix"), m.group("suffix")))
                 continue
-    if scope is Scope.LOCAL:
-        print(aligned)
 
     # get the minimum alignment required for each line
     min_alignment = max(
@@ -95,14 +93,12 @@ def align_scope(content: str, scope: Scope) -> str:
 @helper.locally_scoped
 def align_local(content: str) -> str:
     """ Wrapper for align_scope to use local_scope decorator """
-    print(content)
     return align_scope(content, scope=Scope.LOCAL)
 
 
 @helper.locally_scoped_struct
 def align_local_struct(content: str) -> str:
     """ Wrapper for align_scope to use local_scope decorator """
-    print(content)
     return align_scope(content, scope=Scope.LOCAL)
 
 
