@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 09:56:31 by cacharle          #+#    #+#              #
-#    Updated: 2021/10/13 12:37:23 by tayamamo         ###   ########.fr        #
+#    Updated: 2021/10/14 15:42:57 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -60,29 +60,19 @@ def align_scope(content: str, scope: Scope) -> str:
         typedecl_open_regex = (r"^(?P<prefix>\s*(typedef\s+)?(struct|enum|union))"
                                r"\s*(?P<suffix>[a-zA-Z_]\w+)?$")
         typedecl_close_regex = r"^(?P<prefix>\})\s*(?P<suffix>([a-zA-Z_]\w+)?;)$"
-        in_type_scope = False
         for i, line in enumerate(lines):
             m = re.match(typedecl_open_regex, line)
             if m is not None:
-                in_type_scope = True
                 if m.group("suffix") is not None:
                     aligned.append((i, m.group("prefix"), m.group("suffix")))
                 continue
             m = re.match(typedecl_close_regex, line)
             if m is not None:
-                in_type_scope = False
                 if line != "};":
                     aligned.append((i, m.group("prefix"), m.group("suffix")))
                 continue
-            if in_type_scope:
-                m = re.match(
-                    r"^(?P<prefix>\s+{type})\s+"
-                    r"(?P<suffix>\**{decl};)$"
-                    .format(type=helper.REGEX_TYPE, decl=helper.REGEX_DECL_NAME),
-                    line
-                )
-                if m is not None:
-                    aligned.append((i, m.group("prefix"), m.group("suffix")))
+    if scope is Scope.LOCAL:
+        print(aligned)
 
     # get the minimum alignment required for each line
     min_alignment = max(
@@ -90,9 +80,14 @@ def align_scope(content: str, scope: Scope) -> str:
         default=1
     )
     for i, prefix, suffix in aligned:
-        alignment = len(prefix.replace("\t", " " * 4)) // 4
-        lines[i] = prefix + "\t" * (min_alignment - alignment) + suffix
+        if scope is Scope.GLOBAL:
+            if "struct" not in prefix and "enum" not in prefix and "union" not in prefix:
+                lines[i] = prefix + "\t" + suffix
+            else:
+                lines[i] = prefix + " " + suffix
         if scope is Scope.LOCAL:
+            alignment = len(prefix.replace("\t", " " * 4)) // 4
+            lines[i] = prefix + "\t" * (min_alignment - alignment) + suffix
             lines[i] = "\t" + lines[i]
     return "\n".join(lines)
 
@@ -100,6 +95,14 @@ def align_scope(content: str, scope: Scope) -> str:
 @helper.locally_scoped
 def align_local(content: str) -> str:
     """ Wrapper for align_scope to use local_scope decorator """
+    print(content)
+    return align_scope(content, scope=Scope.LOCAL)
+
+
+@helper.locally_scoped_struct
+def align_local_struct(content: str) -> str:
+    """ Wrapper for align_scope to use local_scope decorator """
+    print(content)
     return align_scope(content, scope=Scope.LOCAL)
 
 
@@ -107,4 +110,5 @@ def align(content: str) -> str:
     """ Align the content in global and local scopes """
     content = align_scope(content, scope=Scope.GLOBAL)
     content = align_local(content)
+    content = align_local_struct(content)
     return content

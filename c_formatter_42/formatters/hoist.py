@@ -6,7 +6,7 @@
 #    By: cacharle <me@cacharle.xyz>                 +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/10/04 11:16:28 by cacharle          #+#    #+#              #
-#    Updated: 2021/10/12 23:37:55 by tayamamo         ###   ########.fr        #
+#    Updated: 2021/10/14 16:02:11 by tayamamo         ###   ########.fr        #
 #                                                                              #
 # ############################################################################ #
 
@@ -20,10 +20,11 @@ def hoist(content: str) -> str:
     r""" Hoist local variable and split assigned declaration
 
     Assignment splitting:
-    {                   {
-        int a = 1;  =>      int a;
-                            a = 1;
-    }                   }
+    {                         {
+        const int i = 0;          const int i = 0;
+        int a = 1;        =>      int a;
+                                  a = 1;
+    }                         }
 
     Variable hoisting:
     {                         {
@@ -36,7 +37,7 @@ def hoist(content: str) -> str:
     {                         {
                                   int a;
         int a;                    char b;
-        puts("bonjour");  ->
+        puts("bonjour");  =>
                                   puts("bonjour");
         char b;               }
     }
